@@ -1,15 +1,16 @@
 # 1.App.Animations
 
 
-- Simple C# animation lib with fluent API.
-- Base on net-stardard 2.0 and netframework 4.6.1
+- A simple C# easing animation lib with fluent API.
+- Base on net-stardard 2.0 and netframework 4.6.1.
+- No depend on other libs.
 - Author: https://www.github.com/surfsky/
 - License: MIT
 
 
 # 2.Install
 
-Nuget-insall App.Animations
+nuget-insall App.Animations
 
 
 
