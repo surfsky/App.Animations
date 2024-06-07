@@ -23,6 +23,7 @@ namespace App.Animations
         public List<Path> Paths { get; set; } = new List<Path>();
         public Thread Thread { get; set; }
         public int Interval { get; set; } = 10;
+        public bool Infinity { get; set; } = false;
 
         // events
         public Action<List<double>> Frame;
@@ -34,13 +35,14 @@ namespace App.Animations
         // Constructor
         //-------------------------------------------------------
         public Animator() { }
-        public Animator(Thread uiThread, int interval, params Path[] paths)
+        public Animator(bool infinity)
         {
-            this.Thread = uiThread;
-            this.Interval = interval;
-            this.Paths = paths.ToList();
+            this.Infinity = infinity;
         }
 
+        //-------------------------------------------------------
+        // Fluent API
+        //-------------------------------------------------------
         public Animator AddPath(EasingType type, double start, double end, long duration)
         {
             this.Paths.Add(new Path(type, start, end, duration));
@@ -49,12 +51,6 @@ namespace App.Animations
         public Animator AddPath(EasingType type, List<double> start, List<double> end, long duration)
         {
             this.Paths.Add(new Path(type, start, end, duration));
-            return this;
-        }
-
-        public Animator AddPath(Path path)
-        {
-            this.Paths.Add(path);
             return this;
         }
 
@@ -88,6 +84,7 @@ namespace App.Animations
 
         public Animator Stop()
         {
+            Infinity = false;
             _running = false;
             return this;
         }
@@ -99,7 +96,14 @@ namespace App.Animations
                 var ms = (long)(DateTime.Now - _start).TotalMilliseconds;  // 总耗时
                 var pathId = FindCurrentPath(ms, out long pathMs);
                 if (pathId == -1)
+                {
+                    if (Infinity)
+                    {
+                        _start = DateTime.Now;
+                        continue;
+                    }
                     break;
+                }
                 else
                 {
                     var path = this.Paths[pathId];

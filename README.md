@@ -2,8 +2,9 @@
 
 
 - A simple C# easing animation lib with fluent API.
-- Base on net-stardard 2.0 and netframework 4.6.1.
-- No depend on other libs.
+- Base on net-stardard 2.0 and netframework 4.6.1 whihout other dependences.
+- Support 30+ easing animations.
+- Support infinity loop animation.
 - Author: https://www.github.com/surfsky/
 - License: MIT
 
@@ -71,6 +72,11 @@ var ani = new Animator()
     .SetEndEvent((_)=> Trace.WriteLine("Animation end."))
     .Start()
     ;
+```
+
+Infinity animation:
+```
+var ani = new Animator(true);
 ```
 
 Change interval to make animation more fluent:

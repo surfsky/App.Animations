@@ -1,10 +1,18 @@
-支持更多缓动函数。如bounce，puls
-https://www.cnblogs.com/lesliexin/p/13594811.html
-绘图
-
-            this._func = FromKnown(type);
+Winform 界面上实现函数的绘图
+实现缓函数：pulse
 
 
+-------------------------------------------------
+done
+-------------------------------------------------
+2.0.2
+    /支持无线循环。
 
 
-/更改支持为 netframework 4.6.1。因为与 netstandard 代码兼容。
+2.0.1
+    /支持更多缓动函数。如bounce，elastic, back. 参考：https://www.cnblogs.com/lesliexin/p/13594811.html
+    /更改支持为 netframework 4.6.1。因为与 netstandard 代码兼容。
+
+2.0.0
+    /初版
+    /支持基础easing 函数。

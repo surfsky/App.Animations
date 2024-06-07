@@ -40,3 +40,17 @@
                 default:                                 throw new ArgumentOutOfRangeException(nameof(type), type, "The passed animation function is unknown.");
             }
         }
+
+
+                public Animator(Thread uiThread, int interval, params Path[] paths)
+        {
+            this.Thread = uiThread;
+            this.Interval = interval;
+            this.Paths = paths.ToList();
+        }
+
+                public Animator AddPath(Path path)
+        {
+            this.Paths.Add(path);
+            return this;
+        }
