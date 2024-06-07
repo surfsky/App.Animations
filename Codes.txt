@@ -1,0 +1,42 @@
+        /// <summary>The base delegate for defining new animation functions.</summary>
+        /// <param name="time">The time of the animation.</param>
+        /// <param name="duration">The duration of the animations.</param>
+        /// <param name="beginValue">The begin value.</param>
+        /// <param name="distance">The different between starting and ending value.</param>
+        /// <returns>The calculated current value of the animation</returns>
+        delegate float EasingFunction(float time, float duration, float beginValue, float distance);
+
+
+
+                /// <summary>Returns a function delegate based on the the passed known animation function</summary>
+        /// <param name="type">The animation function</param>
+        /// <returns>Animation fucntion delegate</returns>
+        static EasingFunction FromKnown(EasingType type)
+        {
+            switch (type)
+            {
+                case EasingType.CubicEaseIn:             return CubicEaseIn;
+                case EasingType.CubicEaseInOut:          return CubicEaseInOut;
+                case EasingType.CubicEaseOut:            return CubicEaseOut;
+                case EasingType.Linear:                  return Linear;
+                case EasingType.CircularEaseInOut:       return CircularEaseInOut;
+                case EasingType.CircularEaseIn:          return CircularEaseIn;
+                case EasingType.CircularEaseOut:         return CircularEaseOut;
+                case EasingType.QuadraticEaseIn:         return QuadraticEaseIn;
+                case EasingType.QuadraticEaseOut:        return QuadraticEaseOut;
+                case EasingType.QuadraticEaseInOut:      return QuadraticEaseInOut;
+                case EasingType.QuarticEaseIn:           return QuarticEaseIn;
+                case EasingType.QuarticEaseOut:          return QuarticEaseOut;
+                case EasingType.QuarticEaseInOut:        return QuarticEaseInOut;
+                case EasingType.QuinticEaseInOut:        return QuinticEaseInOut;
+                case EasingType.QuinticEaseIn:           return QuinticEaseIn;
+                case EasingType.QuinticEaseOut:          return QuinticEaseOut;
+                case EasingType.SinusoidalEaseIn:        return SinusoidalEaseIn;
+                case EasingType.SinusoidalEaseOut:       return SinusoidalEaseOut;
+                case EasingType.SinusoidalEaseInOut:     return SinusoidalEaseInOut;
+                case EasingType.ExponentialEaseIn:       return ExponentialEaseIn;
+                case EasingType.ExponentialEaseOut:      return ExponentialEaseOut;
+                case EasingType.ExponentialEaseInOut:    return ExponentialEaseInOut;
+                default:                                 throw new ArgumentOutOfRangeException(nameof(type), type, "The passed animation function is unknown.");
+            }
+        }

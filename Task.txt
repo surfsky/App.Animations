@@ -1,0 +1,10 @@
+支持更多缓动函数。如bounce，puls
+https://www.cnblogs.com/lesliexin/p/13594811.html
+绘图
+
+            this._func = FromKnown(type);
+
+
+
+
+/更改支持为 netframework 4.6.1。因为与 netstandard 代码兼容。

@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Animations", "App.Animations\App.Animations.csproj", "{925996F6-CD7E-4111-AD32-5F468A183E15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationForm", "AnimationForm\AnimationForm.csproj", "{A3438E34-6CBC-4878-9665-85D6D5809C1D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{73EE57BC-4CBA-4D65-BCC9-A67509600A24}"
+	ProjectSection(SolutionItems) = preProject
+		Codes.txt = Codes.txt
+		README.md = README.md
+		Task.txt = Task.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{925996F6-CD7E-4111-AD32-5F468A183E15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{925996F6-CD7E-4111-AD32-5F468A183E15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{925996F6-CD7E-4111-AD32-5F468A183E15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{925996F6-CD7E-4111-AD32-5F468A183E15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3438E34-6CBC-4878-9665-85D6D5809C1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3438E34-6CBC-4878-9665-85D6D5809C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3438E34-6CBC-4878-9665-85D6D5809C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3438E34-6CBC-4878-9665-85D6D5809C1D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0D7AB89C-C54C-4B0B-8BA0-D0B5EB123959}
+	EndGlobalSection
+EndGlobal

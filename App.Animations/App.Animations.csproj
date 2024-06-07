@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net461;netstandard2.0;</TargetFrameworks>
+    <Title>App.Animations</Title>
+    <Version>2.0.1</Version>
+    <Authors>surfsky</Authors>
+    <Company>surfsky</Company>
+    <Description>A simple C# animation lib with fluent API. Base on net-stardard 2.0.
+</Description>
+    <PackageProjectUrl>https://www.github.com/surfsky/app.animations</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://www.github.com/surfsky/app.animations</RepositoryUrl>
+    <PackageTags>c#, animation, easing</PackageTags>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
