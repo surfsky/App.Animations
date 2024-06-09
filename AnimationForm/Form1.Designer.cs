@@ -49,10 +49,12 @@
             this.btnAnimColor = new System.Windows.Forms.Button();
             this.btnAnimXY = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.lblX = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblY = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblPos = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblColor = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnAnim = new System.Windows.Forms.Button();
+            this.btnAnim1 = new System.Windows.Forms.Button();
+            this.btnAnim2 = new System.Windows.Forms.Button();
+            this.btnAnim3 = new System.Windows.Forms.Button();
+            this.btnAnim4 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDur1)).BeginInit();
@@ -90,17 +92,17 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.picBg);
             this.panel1.Controls.Add(this.block);
-            this.panel1.Location = new System.Drawing.Point(12, 213);
+            this.panel1.Location = new System.Drawing.Point(12, 314);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(556, 179);
+            this.panel1.Size = new System.Drawing.Size(556, 209);
             this.panel1.TabIndex = 3;
             // 
             // picBg
             // 
             this.picBg.Image = global::AnimationForm.Properties.Resources.browser;
-            this.picBg.Location = new System.Drawing.Point(479, 3);
+            this.picBg.Location = new System.Drawing.Point(494, 18);
             this.picBg.Name = "picBg";
-            this.picBg.Size = new System.Drawing.Size(71, 80);
+            this.picBg.Size = new System.Drawing.Size(56, 56);
             this.picBg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBg.TabIndex = 3;
             this.picBg.TabStop = false;
@@ -275,7 +277,7 @@
             // 
             this.btnStop.Location = new System.Drawing.Point(493, 184);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 23);
+            this.btnStop.Size = new System.Drawing.Size(75, 74);
             this.btnStop.TabIndex = 8;
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
@@ -304,49 +306,75 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblX,
-            this.lblY,
+            this.lblPos,
             this.lblColor});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 395);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 526);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(580, 22);
             this.statusStrip1.TabIndex = 11;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // lblX
+            // lblPos
             // 
-            this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(16, 17);
-            this.lblX.Text = "X";
-            // 
-            // lblY
-            // 
-            this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(15, 17);
-            this.lblY.Text = "Y";
+            this.lblPos.Name = "lblPos";
+            this.lblPos.Size = new System.Drawing.Size(32, 17);
+            this.lblPos.Text = "POS";
             // 
             // lblColor
             // 
             this.lblColor.Name = "lblColor";
-            this.lblColor.Size = new System.Drawing.Size(33, 17);
-            this.lblColor.Text = "RGB";
+            this.lblColor.Size = new System.Drawing.Size(50, 17);
+            this.lblColor.Text = "COLOR";
             // 
-            // btnAnim
+            // btnAnim1
             // 
-            this.btnAnim.Location = new System.Drawing.Point(284, 184);
-            this.btnAnim.Name = "btnAnim";
-            this.btnAnim.Size = new System.Drawing.Size(111, 23);
-            this.btnAnim.TabIndex = 12;
-            this.btnAnim.Text = "AnimParallel";
-            this.btnAnim.UseVisualStyleBackColor = true;
-            this.btnAnim.Click += new System.EventHandler(this.btnAnim_Click);
+            this.btnAnim1.Location = new System.Drawing.Point(12, 235);
+            this.btnAnim1.Name = "btnAnim1";
+            this.btnAnim1.Size = new System.Drawing.Size(75, 23);
+            this.btnAnim1.TabIndex = 12;
+            this.btnAnim1.Text = "Anim1";
+            this.btnAnim1.UseVisualStyleBackColor = true;
+            this.btnAnim1.Click += new System.EventHandler(this.btnAnim1_Click);
+            // 
+            // btnAnim2
+            // 
+            this.btnAnim2.Location = new System.Drawing.Point(103, 235);
+            this.btnAnim2.Name = "btnAnim2";
+            this.btnAnim2.Size = new System.Drawing.Size(75, 23);
+            this.btnAnim2.TabIndex = 13;
+            this.btnAnim2.Text = "Anim2";
+            this.btnAnim2.UseVisualStyleBackColor = true;
+            this.btnAnim2.Click += new System.EventHandler(this.btnAnim2_Click);
+            // 
+            // btnAnim3
+            // 
+            this.btnAnim3.Location = new System.Drawing.Point(194, 235);
+            this.btnAnim3.Name = "btnAnim3";
+            this.btnAnim3.Size = new System.Drawing.Size(75, 23);
+            this.btnAnim3.TabIndex = 14;
+            this.btnAnim3.Text = "Anim3";
+            this.btnAnim3.UseVisualStyleBackColor = true;
+            this.btnAnim3.Click += new System.EventHandler(this.btnAnim3_Click);
+            // 
+            // btnAnim4
+            // 
+            this.btnAnim4.Location = new System.Drawing.Point(285, 235);
+            this.btnAnim4.Name = "btnAnim4";
+            this.btnAnim4.Size = new System.Drawing.Size(111, 23);
+            this.btnAnim4.TabIndex = 15;
+            this.btnAnim4.Text = "AnimParallel";
+            this.btnAnim4.UseVisualStyleBackColor = true;
+            this.btnAnim4.Click += new System.EventHandler(this.btnAnim4_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(580, 417);
-            this.Controls.Add(this.btnAnim);
+            this.ClientSize = new System.Drawing.Size(580, 548);
+            this.Controls.Add(this.btnAnim4);
+            this.Controls.Add(this.btnAnim3);
+            this.Controls.Add(this.btnAnim2);
+            this.Controls.Add(this.btnAnim1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnAnimXY);
             this.Controls.Add(this.btnAnimColor);
@@ -391,14 +419,16 @@
         private System.Windows.Forms.CheckBox chkInfinity;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel lblX;
-        private System.Windows.Forms.ToolStripStatusLabel lblY;
+        private System.Windows.Forms.ToolStripStatusLabel lblPos;
         private System.Windows.Forms.ToolStripStatusLabel lblColor;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown numWait;
-        private System.Windows.Forms.Button btnAnim;
+        private System.Windows.Forms.Button btnAnim1;
         private System.Windows.Forms.Panel block;
         private System.Windows.Forms.PictureBox picBg;
+        private System.Windows.Forms.Button btnAnim2;
+        private System.Windows.Forms.Button btnAnim3;
+        private System.Windows.Forms.Button btnAnim4;
     }
 }
 

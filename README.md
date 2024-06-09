@@ -18,9 +18,21 @@ nuget-insall App.Animations
 # 3.Usage
 
 
-Simply example:
+MoveTo animation:
 ``` csharp
-this.block.Animate(EasingType.Linear, 0, 200, 1000, (t, v) => t.Left = (int)v);
+this.block.MoveTo(new Point(70, 100), new Point(150, 50), 1000, EasingType.Linear);     // use moveto extension to apply animation.
+```
+
+Color change example using callback:
+``` csharp
+var startColor = new List<double> { 255, 0, 0 };
+var endColor = new List<double> { 0, 255, 255 };
+this.block.Animate(startColor, endColor, 1000, (t, vs) => t.BackColor = ToColor(vs));   // use callback to modify property.
+```
+
+Assign property to be changed during animation:
+``` csharp
+this.picBg.Animate(500, -50, 1000, t => t.Left);                        // assign property to be modified during animatin.
 ```
 
 One value animation example:

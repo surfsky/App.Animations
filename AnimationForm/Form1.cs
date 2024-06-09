@@ -15,7 +15,7 @@ namespace AnimationForm
 {
     public partial class Form1 : Form
     {
-        Animator anim0 = new Animator();
+        Animator anim0, anim1, anim2, anim3;
 
         //-------------------------------------------------------
         // Init
@@ -47,9 +47,14 @@ namespace AnimationForm
         }
 
         //-------------------------------------------------------
-        // Run
+        // Stop
         //-------------------------------------------------------
         private void btnStop_Click(object sender, EventArgs e)
+        {
+            StopAnims();
+        }
+
+        private void StopAnims()
         {
             anim0?.Stop();
             anim1?.Stop();
@@ -57,10 +62,13 @@ namespace AnimationForm
             anim3?.Stop();
         }
 
+        //-------------------------------------------------------
+        // Run animation
+        //-------------------------------------------------------
         // Animation on x
         private void btnAnimX_Click(object sender, EventArgs e)
         {
-            anim0.Stop();
+            anim0?.Stop();
             var start = 100;  // x
             var end   = 300;
             var type1 = GetEnum<EasingType>(cmbType1);
@@ -93,7 +101,7 @@ namespace AnimationForm
         // Animation on y
         private void btnAnimXY_Click(object sender, EventArgs e)
         {
-            anim0.Stop();
+            anim0?.Stop();
             var start = new List<double> { 100, 10 };  // x, y
             var end   = new List<double> { 300, 100 };
             var type1 = GetEnum<EasingType>(cmbType1);
@@ -126,7 +134,7 @@ namespace AnimationForm
         // Animation on color
         private void btnAnimColor_Click(object sender, EventArgs e)
         {
-            anim0.Stop();
+            anim0?.Stop();
             var start = new List<double> { 255, 0, 0 };        // r, g, b
             var end   = new List<double> { 0, 255, 255 };
             var type1 = GetEnum<EasingType>(cmbType1);
@@ -163,6 +171,43 @@ namespace AnimationForm
                 ;
         }
 
+        //-------------------------------------------------------
+        // Run animation method 2
+        //-------------------------------------------------------
+        private void btnAnim1_Click(object sender, EventArgs e)
+        {
+            StopAnims();
+            //anim1 = this.block.MoveTo(new Point(150, 50), 1000, EasingType.Linear);
+            anim1 = this.block.MoveTo(new Point(70, 100), new Point(150, 50), 1000, EasingType.Linear);
+        }
+
+        private void btnAnim2_Click(object sender, EventArgs e)
+        {
+            StopAnims();
+            var startColor = new List<double> { 255, 0, 0 };
+            var endColor = new List<double> { 0, 255, 255 };
+            anim2 = this.block.Animate(startColor, endColor, 1000, (t, vs) => t.BackColor = ToColor(vs));
+        }
+
+        private void btnAnim3_Click(object sender, EventArgs e)
+        {
+            StopAnims();
+            anim3 = this.picBg.Animate(500, -50, 1000, t => t.Left, infinity: true);  //
+        }
+
+        private void btnAnim4_Click(object sender, EventArgs e)
+        {
+            StopAnims();
+            var startColor = new List<double> { 255, 0, 0 };
+            var endColor = new List<double> { 0, 255, 255 };
+            anim1 = this.block.MoveTo(new Point(70, 100), new Point(150, 50), 1000, EasingType.Linear);     // use moveto extension to apply animation.
+            anim2 = this.block.Animate(startColor, endColor, 1000, (t, vs) => t.BackColor = ToColor(vs));   // use callback to modify property.
+            anim3 = this.picBg.Animate(500, -50, 1000, t => t.Left, infinity: true);                        // assign property to be modified during animatin.
+        }
+
+        //-------------------------------------------------------
+        // Utils
+        //-------------------------------------------------------
         Color ToColor(List<double> values)
         {
             return Color.FromArgb(Limit(values[0]), Limit(values[1]), Limit(values[2]));
@@ -177,33 +222,10 @@ namespace AnimationForm
 
         void ShowBlockInfo()
         {
-            this.lblX.Text = block.Left.ToString();
-            this.lblY.Text = block.Top.ToString();
+            this.lblPos.Text = string.Format("({0}, {1})", block.Left, block.Top);
             this.lblColor.Text = string.Format("({0}, {1}, {2})", block.BackColor.R, block.BackColor.G, block.BackColor.B);
         }
 
-        Animator anim1, anim2, anim3;
-        private void btnAnim_Click(object sender, EventArgs e)
-        {
-            //this.block.Animate(t => t.Left, 20, 200, 1000);
-            //this.block.Animate(t => t.Location.X, 20, 200, 1000);
-            //this.block.Animate(t => t.Location.Y, 20, 100, 1000);
-            //anim2 = this.block.Animate(EasingType.SinusoidalEaseIn, 0, 100, 1000, (t, v) => t.Top  = (int)v);
-            var type1 = GetEnum<EasingType>(cmbType1);
-            var type2 = GetEnum<EasingType>(cmbType2);
-            var dur1 = (long)numDur1.Value;
-            var dur2 = (long)numDur2.Value;
-            var wait = (long)numWait.Value;
-            var interval = (int)numInterval.Value;
-            var infinity = this.chkInfinity.Checked;
-            var startColor = new List<double>{ 255, 0, 0 };
-            var endColor   = new List<double>{ 0, 255, 255 };
-            anim1?.Stop();
-            anim2?.Stop();
-            anim3?.Stop();
-            anim1 = this.block.Animate(type1, 0,   200, 1000, (t, v) => t.Left = (int)v,                         interval: interval, infinity:infinity);
-            anim2 = this.block.Animate(type1, startColor, endColor, 1000, (t, vs) => t.BackColor=ToColor(vs),    interval: interval, infinity:infinity);
-            anim3 = this.picBg.Animate(type2, 500, -50, 5000, (t, v) => t.Left = (int)v,                         interval: interval, infinity:true);
-        }
+
     }
 }
