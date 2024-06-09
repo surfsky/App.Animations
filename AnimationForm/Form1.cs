@@ -15,7 +15,7 @@ namespace AnimationForm
 {
     public partial class Form1 : Form
     {
-        Animator _ani = new Animator();
+        Animator anim0 = new Animator();
 
         //-------------------------------------------------------
         // Init
@@ -51,24 +51,31 @@ namespace AnimationForm
         //-------------------------------------------------------
         private void btnStop_Click(object sender, EventArgs e)
         {
-            if (_ani != null)
-                _ani.Stop();
+            anim0?.Stop();
+            anim1?.Stop();
+            anim2?.Stop();
+            anim3?.Stop();
         }
 
         // Animation on x
         private void btnAnimX_Click(object sender, EventArgs e)
         {
-            _ani.Stop();
+            anim0.Stop();
             var start = 100;  // x
             var end   = 300;
             var type1 = GetEnum<EasingType>(cmbType1);
             var type2 = GetEnum<EasingType>(cmbType2);
             var dur1 = (long)numDur1.Value;
             var dur2 = (long)numDur2.Value;
-            _ani = new Animator(this.chkInfinity.Checked)
-                .SetInterval((int)numInterval.Value)
+            var wait = (long)numWait.Value;
+            var interval = (int)numInterval.Value;
+            var infinity = this.chkInfinity.Checked;
+            anim0 = new Animator(this.chkInfinity.Checked)
                 .AddPath(type1, start, end, dur1)
                 .AddPath(type2, end, start, dur2)
+                .SetInterval(interval)
+                .SetWait(wait)
+                .SetInfinity(infinity)
                 .SetFrameEvent((values) =>
                 {
                     Action action = () => {
@@ -86,17 +93,23 @@ namespace AnimationForm
         // Animation on y
         private void btnAnimXY_Click(object sender, EventArgs e)
         {
-            _ani.Stop();
+            anim0.Stop();
             var start = new List<double> { 100, 10 };  // x, y
             var end   = new List<double> { 300, 100 };
             var type1 = GetEnum<EasingType>(cmbType1);
             var type2 = GetEnum<EasingType>(cmbType2);
             var dur1 = (long)numDur1.Value;
             var dur2 = (long)numDur2.Value;
-            _ani = new Animator(this.chkInfinity.Checked)
+            var wait = (long)numWait.Value;
+            var interval = (int)numInterval.Value;
+            var infinity = this.chkInfinity.Checked;
+            anim0 = new Animator(this.chkInfinity.Checked)
                 .SetInterval((int)numInterval.Value)
                 .AddPath(type1, start, end, dur1)
                 .AddPath(type2, end, start, dur2)
+                .SetInterval(interval)
+                .SetWait(wait)
+                .SetInfinity(infinity)
                 .SetFrameEvent((values) =>
                 {
                     Action action = () => {
@@ -113,21 +126,27 @@ namespace AnimationForm
         // Animation on color
         private void btnAnimColor_Click(object sender, EventArgs e)
         {
-            _ani.Stop();
+            anim0.Stop();
             var start = new List<double> { 255, 0, 0 };        // r, g, b
             var end   = new List<double> { 0, 255, 255 };
             var type1 = GetEnum<EasingType>(cmbType1);
             var type2 = GetEnum<EasingType>(cmbType2);
             var dur1 = (long)numDur1.Value;
             var dur2 = (long)numDur2.Value;
-            _ani = new Animator(this.chkInfinity.Checked)
+            var wait = (long)numWait.Value;
+            var interval = (int)numInterval.Value;
+            var infinity = this.chkInfinity.Checked;
+            anim0 = new Animator(this.chkInfinity.Checked)
                 .SetInterval((int)numInterval.Value)
                 .AddPath(type1, start, end, dur1)
                 .AddPath(type2, end, start, dur2)
+                .SetInterval(interval)
+                .SetWait(wait)
+                .SetInfinity(infinity)
                 .SetFrameEvent((values) =>
                 {
                     Action action = () => {
-                        block.BackColor = Color.FromArgb(Limit(values[0]), Limit(values[1]), Limit(values[2]));
+                        block.BackColor = ToColor(values);
                         ShowBlockInfo();
                     };
                     this.Invoke(action);
@@ -135,13 +154,18 @@ namespace AnimationForm
                 .SetEndEvent((values)=>
                 {
                     Action action = () => {
-                        block.BackColor = Color.FromArgb(Limit(values[0]), Limit(values[1]), Limit(values[2]));
+                        block.BackColor = ToColor(values);
                         ShowBlockInfo();
                     };
                     this.Invoke(action);
                 })
                 .Start()
                 ;
+        }
+
+        Color ToColor(List<double> values)
+        {
+            return Color.FromArgb(Limit(values[0]), Limit(values[1]), Limit(values[2]));
         }
 
         int Limit(double v, int min=0, int max=255)
@@ -156,6 +180,30 @@ namespace AnimationForm
             this.lblX.Text = block.Left.ToString();
             this.lblY.Text = block.Top.ToString();
             this.lblColor.Text = string.Format("({0}, {1}, {2})", block.BackColor.R, block.BackColor.G, block.BackColor.B);
+        }
+
+        Animator anim1, anim2, anim3;
+        private void btnAnim_Click(object sender, EventArgs e)
+        {
+            //this.block.Animate(t => t.Left, 20, 200, 1000);
+            //this.block.Animate(t => t.Location.X, 20, 200, 1000);
+            //this.block.Animate(t => t.Location.Y, 20, 100, 1000);
+            //anim2 = this.block.Animate(EasingType.SinusoidalEaseIn, 0, 100, 1000, (t, v) => t.Top  = (int)v);
+            var type1 = GetEnum<EasingType>(cmbType1);
+            var type2 = GetEnum<EasingType>(cmbType2);
+            var dur1 = (long)numDur1.Value;
+            var dur2 = (long)numDur2.Value;
+            var wait = (long)numWait.Value;
+            var interval = (int)numInterval.Value;
+            var infinity = this.chkInfinity.Checked;
+            var startColor = new List<double>{ 255, 0, 0 };
+            var endColor   = new List<double>{ 0, 255, 255 };
+            anim1?.Stop();
+            anim2?.Stop();
+            anim3?.Stop();
+            anim1 = this.block.Animate(type1, 0,   200, 1000, (t, v) => t.Left = (int)v,                         interval: interval, infinity:infinity);
+            anim2 = this.block.Animate(type1, startColor, endColor, 1000, (t, vs) => t.BackColor=ToColor(vs),    interval: interval, infinity:infinity);
+            anim3 = this.picBg.Animate(type2, 500, -50, 5000, (t, v) => t.Left = (int)v,                         interval: interval, infinity:true);
         }
     }
 }

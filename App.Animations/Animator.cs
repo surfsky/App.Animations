@@ -20,6 +20,8 @@ namespace App.Animations
         //-------------------------------------------------------
         // Public properties and event
         //-------------------------------------------------------
+        /// <summary>Wait microSeconds</summary>
+        public long Wait { get; set; }
         public List<Path> Paths { get; set; } = new List<Path>();
         public Thread Thread { get; set; }
         public int Interval { get; set; } = 10;
@@ -37,7 +39,7 @@ namespace App.Animations
         public Animator() { }
         public Animator(bool infinity)
         {
-            this.Infinity = infinity;
+            SetInfinity(infinity);
         }
 
         //-------------------------------------------------------
@@ -60,14 +62,25 @@ namespace App.Animations
             return this;
         }
 
-        public Animator SetFrameEvent(Action<List<double>> action) 
-        { 
-            this.Frame = action; 
+        public Animator SetFrameEvent(Action<List<double>> action)
+        {
+            this.Frame = action;
             return this;
         }
-        public Animator SetEndEvent(Action<List<double>> action) 
-        { 
-            this.End = action; 
+        public Animator SetEndEvent(Action<List<double>> action)
+        {
+            this.End = action;
+            return this;
+        }
+
+        public Animator SetWait(long ms)
+        {
+            this.Wait = ms;
+            return this;
+        }
+        public Animator SetInfinity(bool infinity)
+        {
+            this.Infinity = infinity;
             return this;
         }
 
@@ -76,9 +89,7 @@ namespace App.Animations
         //-------------------------------------------------------
         public Animator Start()
         {
-            _running = true;
-            _start = DateTime.Now;
-            new Thread(() =>Loop()).Start();
+            new Thread(() => Loop()).Start();
             return this;
         }
 
@@ -91,6 +102,20 @@ namespace App.Animations
 
         void Loop()
         {
+            _running = true;
+            _start = DateTime.Now;
+
+            // Waiting
+            while (_running)
+            {
+                if (DateTime.Now >= _start.AddMilliseconds(Wait))
+                    break;
+                Thread.Sleep(Interval);
+            }
+
+
+            // Real animation
+            _start = DateTime.Now;
             while (_running)
             {
                 var ms = (long)(DateTime.Now - _start).TotalMilliseconds;  // 总耗时
@@ -109,7 +134,7 @@ namespace App.Animations
                     var path = this.Paths[pathId];
                     var values = path.GetValues(pathMs);
                     Frame?.Invoke(values);
-                    Trace.WriteLine(string.Format("Time={0}, Path={1}, PathType={2}, Values=({3})", ms, pathId, path.Type, ToJoinString(values)));
+                    //Trace.WriteLine(string.Format("Time={0}, Path={1}, PathType={2}, Values=({3})", ms, pathId, path.Type, ToJoinString(values)));
                 }
                 Thread.Sleep(Interval);
             }

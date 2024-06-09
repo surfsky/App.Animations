@@ -18,6 +18,11 @@ nuget-insall App.Animations
 # 3.Usage
 
 
+Simply example:
+``` csharp
+this.block.Animate(EasingType.Linear, 0, 200, 1000, (t, v) => t.Left = (int)v);
+```
+
 One value animation example:
 ```csharp
 var ani = new Animator()
