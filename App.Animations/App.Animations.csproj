@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net461;netstandard2.0;</TargetFrameworks>
     <Title>App.Animations</Title>
-    <Version>2.0.3</Version>
+    <Version>2.0.4</Version>
     <Authors>surfsky</Authors>
     <Company>surfsky</Company>
     <Description>A simple C# easing animation lib with fluent API. Base on net-stardard 2.0 and netframework4.6.1.
