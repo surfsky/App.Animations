@@ -39,6 +39,7 @@ namespace App.Animations
         ExponentialEaseOut,
         ExponentialEaseInOut,
         None,
+        Custom
     }
 
 
@@ -49,14 +50,36 @@ namespace App.Animations
     {
         /// <summary>Animaton easing type</summary>
         public EasingType Type { get; set; }
+        private Func<double, double> _func = null;
 
 
         //----------------------------------------------------------------
         // Constructor
         //----------------------------------------------------------------
+        public EasingAnimation() { }
         public EasingAnimation(EasingType type)
         {
             this.Type = type;
+        }
+        public EasingAnimation(Func<double, double> func)
+        {
+            SetCustomFunc(func);
+        }
+
+        /// <param name="easingFunc">Custom easing funcion. The input arg is between 0.0-1.0</param>
+        public EasingAnimation SetCustomFunc(Func<double, double> easingFunc)
+        {
+            this.Type = EasingType.Custom;
+            this._func = easingFunc;
+            return this;
+        }
+
+        public EasingAnimation Clone()
+        {
+            var ani = new EasingAnimation();
+            ani.Type = Type;
+            ani._func = _func;
+            return ani;
         }
 
 
@@ -71,6 +94,9 @@ namespace App.Animations
         /// <returns>The calculated current value of the animation</returns>
         public double GetValue(double time, double duration, double beginValue, double distance)
         {
+            if (_func != null)
+                return beginValue + distance * _func(time / duration);
+
             switch (this.Type)
             {
                 case EasingType.None:                    return beginValue;
@@ -122,9 +148,9 @@ namespace App.Animations
         // LInear functions
         //----------------------------------------------------------------
         /// <summary>The linear animation function.</summary>
-        public static double Linear(double t, double d, double b, double c)
+        public static double Linear(double time, double duration, double beginValue, double distance)
         {
-            return c * t / d + b;
+            return beginValue + distance * time / duration;
         }
 
 

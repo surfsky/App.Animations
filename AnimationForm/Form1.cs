@@ -23,8 +23,7 @@ namespace AnimationForm
         public Form1()
         {
             InitializeComponent();
-            BindEnum(this.cmbType1, typeof(EasingType));
-            BindEnum(this.cmbType2, typeof(EasingType));
+            BindEnum(this.cmbType, typeof(EasingType));
         }
 
         //-------------------------------------------------------
@@ -63,7 +62,7 @@ namespace AnimationForm
         }
 
         //-------------------------------------------------------
-        // Run animation
+        // Run animation - use basic api
         //-------------------------------------------------------
         // Animation on x
         private void btnAnimX_Click(object sender, EventArgs e)
@@ -71,16 +70,16 @@ namespace AnimationForm
             anim0?.Stop();
             var start = 100;  // x
             var end   = 300;
-            var type1 = GetEnum<EasingType>(cmbType1);
-            var type2 = GetEnum<EasingType>(cmbType2);
-            var dur1 = (long)numDur1.Value;
-            var dur2 = (long)numDur2.Value;
+            var type1 = GetEnum<EasingType>(cmbType);
+            var dur1 = (long)numDur.Value;
             var wait = (long)numWait.Value;
             var interval = (int)numInterval.Value;
             var infinity = this.chkInfinity.Checked;
+            var back = this.chkBack.Checked;
             anim0 = new Animator(this.chkInfinity.Checked)
                 .AddPath(type1, start, end, dur1)
-                .AddPath(type2, end, start, dur2)
+                .AddReversePaths(back)
+                //.AddPath(type2, end, start, dur2)
                 .SetInterval(interval)
                 .SetWait(wait)
                 .SetInfinity(infinity)
@@ -104,17 +103,17 @@ namespace AnimationForm
             anim0?.Stop();
             var start = new List<double> { 100, 10 };  // x, y
             var end   = new List<double> { 300, 100 };
-            var type1 = GetEnum<EasingType>(cmbType1);
-            var type2 = GetEnum<EasingType>(cmbType2);
-            var dur1 = (long)numDur1.Value;
-            var dur2 = (long)numDur2.Value;
+            var type1 = GetEnum<EasingType>(cmbType);
+            var dur1 = (long)numDur.Value;
             var wait = (long)numWait.Value;
             var interval = (int)numInterval.Value;
             var infinity = this.chkInfinity.Checked;
+            var back = this.chkBack.Checked;
             anim0 = new Animator(this.chkInfinity.Checked)
                 .SetInterval((int)numInterval.Value)
                 .AddPath(type1, start, end, dur1)
-                .AddPath(type2, end, start, dur2)
+                .AddReversePaths(back)
+                //.AddPath(type2, end, start, dur2)
                 .SetInterval(interval)
                 .SetWait(wait)
                 .SetInfinity(infinity)
@@ -137,17 +136,17 @@ namespace AnimationForm
             anim0?.Stop();
             var start = new List<double> { 255, 0, 0 };        // r, g, b
             var end   = new List<double> { 0, 255, 255 };
-            var type1 = GetEnum<EasingType>(cmbType1);
-            var type2 = GetEnum<EasingType>(cmbType2);
-            var dur1 = (long)numDur1.Value;
-            var dur2 = (long)numDur2.Value;
+            var type1 = GetEnum<EasingType>(cmbType);
+            var dur1 = (long)numDur.Value;
             var wait = (long)numWait.Value;
             var interval = (int)numInterval.Value;
             var infinity = this.chkInfinity.Checked;
+            var back = this.chkBack.Checked;
             anim0 = new Animator(this.chkInfinity.Checked)
                 .SetInterval((int)numInterval.Value)
                 .AddPath(type1, start, end, dur1)
-                .AddPath(type2, end, start, dur2)
+                .AddReversePaths(back)
+                //.AddPath(type2, end, start, dur2)
                 .SetInterval(interval)
                 .SetWait(wait)
                 .SetInfinity(infinity)
@@ -172,13 +171,13 @@ namespace AnimationForm
         }
 
         //-------------------------------------------------------
-        // Run animation method 2
+        // Run animation : use extension api
         //-------------------------------------------------------
         private void btnAnim1_Click(object sender, EventArgs e)
         {
             StopAnims();
-            //anim1 = this.block.MoveTo(new Point(150, 50), 1000, EasingType.Linear);
-            anim1 = this.block.MoveTo(new Point(70, 100), new Point(150, 50), 1000, EasingType.Linear);
+            anim1 = this.block.MoveTo(new Point(150, 50), 1000, EasingType.Linear, true);
+            //anim1 = this.block.MoveTo(new Point(70, 100), new Point(150, 50), 1000, EasingType.Linear, true);
         }
 
         private void btnAnim2_Click(object sender, EventArgs e)
@@ -186,13 +185,13 @@ namespace AnimationForm
             StopAnims();
             var startColor = new List<double> { 255, 0, 0 };
             var endColor = new List<double> { 0, 255, 255 };
-            anim2 = this.block.Animate(startColor, endColor, 1000, (t, vs) => t.BackColor = ToColor(vs));
+            anim2 = this.block.Animate(startColor, endColor, 1000, (t, vs) => t.BackColor = ToColor(vs), back:true);
         }
 
         private void btnAnim3_Click(object sender, EventArgs e)
         {
             StopAnims();
-            anim3 = this.picBg.Animate(500, -50, 1000, t => t.Left, infinity: true);  //
+            anim3 = this.picBall.Animate(500, -50, 1000, t => t.Left, infinity: true);  //
         }
 
         private void btnAnim4_Click(object sender, EventArgs e)
@@ -200,9 +199,18 @@ namespace AnimationForm
             StopAnims();
             var startColor = new List<double> { 255, 0, 0 };
             var endColor = new List<double> { 0, 255, 255 };
-            anim1 = this.block.MoveTo(new Point(70, 100), new Point(150, 50), 1000, EasingType.Linear);     // use moveto extension to apply animation.
+            anim1 = this.block.MoveTo(new Point(70, 100), new Point(150, 50), 1000, back: true);            // use moveto extension to apply animation.
             anim2 = this.block.Animate(startColor, endColor, 1000, (t, vs) => t.BackColor = ToColor(vs));   // use callback to modify property.
-            anim3 = this.picBg.Animate(500, -50, 1000, t => t.Left, infinity: true);                        // assign property to be modified during animatin.
+            anim3 = this.picBall.Animate(500, -50, 1000, t => t.Left, infinity: true);                        // assign property to be modified during animatin.
+        }
+
+        private void btnAnimCustom_Click(object sender, EventArgs e)
+        {
+            StopAnims();
+            // custom easing function
+            Func<double, double> func = (v) => Math.Sin(v*Math.PI*2);
+            anim1 = this.picBall.Animate(600, -50, 5000, (t,v) => t.Left = (int)v, EasingType.Linear, infinity:true);  // X linear animation
+            anim2 = this.picBall.Animate(100, 200, 5000, (t,v) => t.Top = (int)v, easingFunc: func, infinity: true);    // Y custom animation
         }
 
         //-------------------------------------------------------

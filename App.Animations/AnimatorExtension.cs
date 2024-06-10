@@ -11,20 +11,22 @@ namespace App.Animations
     public static class AnimatorExtension
     {
         /// <summary>
-        /// something.Animate(t=>t.Top, 100, 200, 1000, Linear);
-        /// 仅支持简单可写属性。不支持复杂属性，或复杂对象。
+        /// Build animation by assigning changing property. The method just supports simple-writable property.
+        /// something.Animate(100, 200, 1000, t=>t.Top);
         /// </summary>
-        public static Animator Animate<T,TValue>(
+        /// <param name="back">If true, the object will animate back to the origin</param>
+        public static Animator Animate<T, TValue>(
             this T obj,
             double startValue,
-            double endValue, 
-            long duration, 
+            double endValue,
+            long duration,
             Expression<Func<T, TValue>> property,
             EasingType easingType = EasingType.Linear,
             long wait = 0,
             int interval = 10,
             bool autoStart = true,
-            bool infinity = false
+            bool infinity = false,
+            bool back = false
             )
         {
             var propertyInfo = obj.GetPropertyInfo(property);
@@ -50,14 +52,18 @@ namespace App.Animations
                     SafeInvoke(obj, action);
                 })
                 ;
+            if (back)
+                ani.AddReversePaths();
             if (autoStart)
                 ani.Start();
             return ani;
         }
 
         /// <summary>
-        /// something.Animate(100, 200, 1000, Linear, t=>t.Top=(int)value);
+        /// Build animation with callback.
+        /// something.Animate(100, 200, 1000, t=>t.Top=(int)value);
         /// </summary>
+        /// <param name="back">If true, the object will animate back to the origin</param>
         public static Animator Animate<T>(
             this T obj,
             double startValue, 
@@ -68,7 +74,8 @@ namespace App.Animations
             long wait = 0, 
             int interval = 10,
             bool autoStart=true,
-            bool infinity=false
+            bool infinity=false,
+            bool back = false
             )
         {
             var ani = new Animator()
@@ -87,14 +94,61 @@ namespace App.Animations
                     SafeInvoke(obj, action);
                 })
                 ;
+            if (back)
+                ani.AddReversePaths();
             if (autoStart)
                 ani.Start();
             return ani;
         }
 
         /// <summary>
-        /// something.Animate([0,0], [200,100], 1000, Linear, t=>{t.Left=(int)value[0], t.Top=(int)values[1]});
+        /// Build animation with callback.
+        /// something.Animate(100, 200, 1000, t=>t.Top=(int)value);
         /// </summary>
+        /// <param name="easingFunc">Custom easing funcion. The input arg is between 0.0-1.0</param>
+        /// <param name="back">If true, the object will animate back to the origin</param>
+        public static Animator Animate<T>(
+            this T obj,
+            double startValue,
+            double endValue,
+            long duration,
+            Action<T, double> onFrame,
+            Func<double, double> easingFunc,
+            long wait = 0,
+            int interval = 10,
+            bool autoStart = true,
+            bool infinity = false,
+            bool back = false
+            )
+        {
+            var ani = new Animator()
+                .AddPath(easingFunc, startValue, endValue, duration)
+                .SetWait(wait)
+                .SetInterval(interval)
+                .SetInfinity(infinity)
+                .SetFrameEvent((values) =>
+                {
+                    Action action = () => onFrame(obj, (double)values[0]);
+                    SafeInvoke(obj, action);
+                })
+                .SetEndEvent((values) =>
+                {
+                    Action action = () => onFrame(obj, (double)values[0]);
+                    SafeInvoke(obj, action);
+                })
+                ;
+            if (back)
+                ani.AddReversePaths();
+            if (autoStart)
+                ani.Start();
+            return ani;
+        }
+
+        /// <summary>
+        /// Build animation with callback.
+        /// something.Animate([0,0], [200,100], 1000, t=>{t.Left=(int)value[0], t.Top=(int)values[1]});
+        /// </summary>
+        /// <param name="back">If true, the object will animate back to the origin</param>
         public static Animator Animate<T>(
             this T obj,
             List<double> startValues, 
@@ -105,7 +159,8 @@ namespace App.Animations
             long wait = 0,
             int interval = 10,
             bool autoStart = true,
-            bool infinity = false
+            bool infinity = false,
+            bool back = false
             )
         {
             var ani = new Animator()
@@ -124,6 +179,51 @@ namespace App.Animations
                     SafeInvoke(obj, action);
                 })
                 ;
+            if (back)
+                ani.AddReversePaths();
+            if (autoStart)
+                ani.Start();
+            return ani;
+        }
+
+        /// <summary>
+        /// Build animation with callback.
+        /// something.Animate([0,0], [200,100], 1000, t=>{t.Left=(int)value[0], t.Top=(int)values[1]});
+        /// </summary>
+        /// <param name="easingFunc">Custom easing funcion. The input arg is between 0.0-1.0</param>
+        /// <param name="back">If true, the object will animate back to the origin</param>
+        public static Animator Animate<T>(
+            this T obj,
+            List<double> startValues,
+            List<double> endValues,
+            long duration,
+            Action<T, List<double>> onFrame,
+            Func<double, double> easingFunc,
+            long wait = 0,
+            int interval = 10,
+            bool autoStart = true,
+            bool infinity = false,
+            bool back = false
+            )
+        {
+            var ani = new Animator()
+                .AddPath(easingFunc, startValues, endValues, duration)
+                .SetInfinity(infinity)
+                .SetInterval(interval)
+                .SetWait(wait)
+                .SetFrameEvent((values) =>
+                {
+                    Action action = () => onFrame(obj, values);
+                    SafeInvoke(obj, action);
+                })
+                .SetEndEvent((values) =>
+                {
+                    Action action = () => onFrame(obj, values);
+                    SafeInvoke(obj, action);
+                })
+                ;
+            if (back)
+                ani.AddReversePaths();
             if (autoStart)
                 ani.Start();
             return ani;
@@ -132,10 +232,10 @@ namespace App.Animations
         /// <summary>UI 线程安全调用</summary>
         private static void SafeInvoke<T>(T obj, Action action)
         {
-            // winform need: obj.Invoke(action)
             var type = obj.GetType();
             if (type.IsType("System.Windows.Forms.Control"))
             {
+                // winform need: obj.Invoke(action)
                 var method = type.GetMethodInfo("Invoke");
                 method.Invoke(obj, new object[] { action });
             }

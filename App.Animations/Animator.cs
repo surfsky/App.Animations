@@ -43,8 +43,13 @@ namespace App.Animations
         }
 
         //-------------------------------------------------------
-        // Fluent API
+        // Fluent API - AddPath
         //-------------------------------------------------------
+        public Animator AddPath(Path path)
+        {
+            this.Paths.Add(path);
+            return this;
+        }
         public Animator AddPath(EasingType type, double start, double end, long duration)
         {
             this.Paths.Add(new Path(type, start, end, duration));
@@ -55,7 +60,31 @@ namespace App.Animations
             this.Paths.Add(new Path(type, start, end, duration));
             return this;
         }
+        public Animator AddPath(Func<double, double> func, double start, double end, long duration)
+        {
+            this.Paths.Add(new Path(func, start, end, duration));
+            return this;
+        }
+        public Animator AddPath(Func<double, double> func, List<double> start, List<double> end, long duration)
+        {
+            this.Paths.Add(new Path(func, start, end, duration));
+            return this;
+        }
+        /// <summary>Add reverse paths to return back to the origin</summary>
+        public Animator AddReversePaths(bool b=true)
+        {
+            if (b)
+            {
+                int n = this.Paths.Count;
+                for (int i = n - 1; i >= 0; i--)
+                    Paths.Add(Paths[i].Reverse());
+            }
+            return this;
+        }
 
+        //-------------------------------------------------------
+        // Fluent API
+        //-------------------------------------------------------
         public Animator SetInterval(int interval)
         {
             this.Interval = (int)interval;

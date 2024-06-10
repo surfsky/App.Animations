@@ -3,8 +3,10 @@
 
 - A simple C# easing animation lib with fluent API.
 - Base on net-stardard 2.0 and netframework 4.6.1 whihout other dependences.
-- Support 30+ easing animations.
+- Support 30+ well-defined easing animations.
+- Support custom easing animation.
 - Support infinity loop animation.
+- Support auto back animation.
 - Author: https://www.github.com/surfsky/
 - License: MIT
 
@@ -18,28 +20,40 @@ nuget-insall App.Animations
 # 3.Usage
 
 
+## 3.1 Use extend functions
+
 MoveTo animation:
 ``` csharp
-this.block.MoveTo(new Point(70, 100), new Point(150, 50), 1000, EasingType.Linear);     // use moveto extension to apply animation.
+this.block.MoveTo(new Point(70, 100), new Point(150, 50), 1000, EasingType.Linear);     // use moveto extension function to apply animation.
 ```
 
-Color change example using callback:
+Color animation using callback:
 ``` csharp
 var startColor = new List<double> { 255, 0, 0 };
 var endColor = new List<double> { 0, 255, 255 };
 this.block.Animate(startColor, endColor, 1000, (t, vs) => t.BackColor = ToColor(vs));   // use callback to modify property.
 ```
 
-Assign property to be changed during animation:
+Property animation:
 ``` csharp
-this.picBg.Animate(500, -50, 1000, t => t.Left);                        // assign property to be modified during animatin.
+this.picBall.Animate(500, -50, 1000, t => t.Left); 
 ```
+
+Custom easing function
+```
+Func<double, double> func = (v) => Math.Sin(v*Math.PI*2);   // define a sin easing function
+anim1 = this.picBall.Animate(600, -50, 5000, (t,v) => t.Left = (int)v, EasingType.Linear, infinity:true);  // X linear animation
+anim2 = this.picBall.Animate(100, 200, 5000, (t,v) => t.Top = (int)v, easingFunc: func, infinity: true);   // Y custom animation
+```
+
+
+## 3.2 Use basic fluent api
 
 One value animation example:
 ```csharp
 var ani = new Animator()
-    .AddPath(AnimationType.ExponentialEaseOut, 100, 300, 1000)
-    .AddPath(AnimationType.Linear, 300, 100, 500)
+    .AddPath(EasingType.ExponentialEaseOut, 100, 300, 1000)
+    .AddPath(EasingType.Linear, 300, 100, 500)
     .SetFrameEvent((values) =>
     {
         Action action = () => {label1.Left = (int)values[0];};
@@ -91,9 +105,11 @@ var ani = new Animator()
     ;
 ```
 
-Infinity animation:
+## 3.3 Other functions
+
+Infinity loop animation:
 ```
-var ani = new Animator(true);
+ani.SetInfinity(true);
 ```
 
 Change interval to make animation more fluent:
@@ -101,6 +117,11 @@ Change interval to make animation more fluent:
 ```csharp
 ani.SetInterval(5);
 
+```
+
+Add autoback paths:
+```
+ani.AddReversePaths();
 ```
 
 Stop animation:
@@ -147,4 +168,6 @@ ani.Stop();
 | CircularEaseInOut    | Circular ease in and ease out   
 | CircularEaseIn       | Circular ease in      
 | CircularEaseOut      | Circular ease out     
+|:---------------------|:-----------------
+| Custom               | Custom easing function: Func<double, double>
 
