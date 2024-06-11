@@ -2,7 +2,7 @@
 
 
 - A simple C# easing animation lib with fluent API.
-- Base on net-stardard 2.0 and netframework 4.6.1 whihout other dependences.
+- Base on net-stardard 2.0 and netframework 4.6.1 without other dependences.
 - Support 30+ well-defined easing animations.
 - Support custom easing animation.
 - Support infinity loop animation.
@@ -20,30 +20,31 @@ nuget-insall App.Animations
 # 3.Usage
 
 
-## 3.1 Use extend functions
+## 3.1 Use extension functions
 
 MoveTo animation:
 ``` csharp
-this.block.MoveTo(new Point(70, 100), new Point(150, 50), 1000, EasingType.Linear);     // use moveto extension function to apply animation.
+this.block.MoveTo(new Point(10, 20), new Point(100, 200), 1000);
+```
+
+Property animation:
+``` csharp
+this.picBall.Animate(0, 200, 1000, t => t.Left);
 ```
 
 Color animation using callback:
 ``` csharp
 var startColor = new List<double> { 255, 0, 0 };
 var endColor = new List<double> { 0, 255, 255 };
-this.block.Animate(startColor, endColor, 1000, (t, vs) => t.BackColor = ToColor(vs));   // use callback to modify property.
-```
-
-Property animation:
-``` csharp
-this.picBall.Animate(500, -50, 1000, t => t.Left); 
+this.block.Animate(startColor, endColor, 1000, (t, vs) => t.BackColor = ToColor(vs));
+Color ToColor(List<double> values) => Color.FromArgb((int)values[0], (int)values[1], (int)values[2]);
 ```
 
 Custom easing function
 ```
-Func<double, double> func = (v) => Math.Sin(v*Math.PI*2);   // define a sin easing function
-anim1 = this.picBall.Animate(600, -50, 5000, (t,v) => t.Left = (int)v, EasingType.Linear, infinity:true);  // X linear animation
-anim2 = this.picBall.Animate(100, 200, 5000, (t,v) => t.Top = (int)v, easingFunc: func, infinity: true);   // Y custom animation
+Func<double, double> func = (v) => Math.Sin(v*Math.PI*2);                                       // define sin easing function
+var anim1 = this.picBall.Animate(600, -50, 5000, (t,v) => t.Left = (int)v, EasingType.Linear);  // X use linear animation
+var anim2 = this.picBall.Animate(100, 200, 5000, (t,v) => t.Top  = (int)v, easingFunc: func);   // Y use custom animation
 ```
 
 
